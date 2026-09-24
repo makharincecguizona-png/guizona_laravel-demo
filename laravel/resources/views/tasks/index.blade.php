@@ -1,15 +1,15 @@
 @extends('layouts.app')
 
-@content
+@section('content')
 <div class="flex justify-between items-center mb-6">
     <h1 class="text-3xl font-bold">Personal Task Manager</h1>
-    <a href="{{ route('tasks.create') }}" class="bg-blue-600 text-white px-4 py-2 rounded">Add Task</a>
+    <a href="/tasks/create" class="bg-red-700 hover:bg-black-200 text-white px-4 py-2 rounded text-sm font-medium transition shadow-sm">Add Task</a>
 </div>
 
-<div class="bg-white rounded-lg shadow overflow-hidden">
+<div class="bg-red rounded-lg shadow overflow-hidden border border-pink-200">
     <table class="w-full text-left border-collapse">
         <thead>
-            <tr class="bg-gray-200">
+            <tr class="bg-pink-300/60 text-black-800">
                 <th class="p-3">Task</th>
                 <th class="p-3">Description</th>
                 <th class="p-3">Due Date</th>
@@ -17,33 +17,33 @@
                 <th class="p-3">Actions</th>
             </tr>
         </thead>
-        <tbody>
+        <tbody class="divide-y divide-red-200 text-sm">
             @forelse($tasks as $task)
             <tr class="border-t">
-                <td class="p-3 font-semibold">{{ $task->task_name }}</td>
-                <td class="p-3 text-gray-600">{{ $task->description }}</td>
-                <td class="p-3">{{ $task->due_date }}</td>
+                <td class="p-3 font-semibold text-black-800">{{ $task->task_name }}</td>
+                <td class="p-3 text-black-600">{{ $task->description }}</td>
+                <td class="p-3 text-black-600">{{ $task->due_date }}</td>
                 <td class="p-3">
-                    <form action="{{ route('tasks.updateStatus', $task) }}" method="POST">
+                    <form action="/tasks/{{ $task->id }}/status" method="POST">
                         @csrf
                         @method('PATCH')
-                        <button type="submit" class="px-2 py-1 rounded text-white text-sm {{ $task->status === 'Completed' ? 'bg-green-600' : 'bg-yellow-500' }}">
+                        <button type="submit" class="px-3 py-1 rounded-full text-xs font-semibold {{ $task->status === 'Completed' ? 'bg-pink-200 text-pink-800' : 'bg-rose-100 text-rose-700' }}">
                             {{ $task->status }}
                         </button>
                     </form>
                 </td>
                 <td class="p-3 flex space-x-2">
-                    <a href="{{ route('tasks.edit', $task) }}" class="bg-gray-500 text-white px-2 py-1 rounded text-sm">Edit</a>
-                    <form action="{{ route('tasks.destroy', $task) }}" method="POST" onsubmit="return confirm('Delete task?')">
+                    <a href="/tasks/{{ $task->id }}/edit" class="bg-pink-100 hover:bg-pink-200 text-pink-800 px-3 py-1 rounded-md text-xs font-medium transition">Edit</a>
+                    <form action="/tasks/{{ $task->id }}" method="POST" onsubmit="return confirm('Delete task?')">
                         @csrf
                         @method('DELETE')
-                        <button type="submit" class="bg-red-600 text-white px-2 py-1 rounded text-sm">Delete</button>
+                        <button type="submit" class="bg-rose-400 hover:bg-rose-500 text-white px-3 py-1 rounded-md text-xs font-medium transition">Delete</button>
                     </form>
                 </td>
             </tr>
             @empty
             <tr>
-                <td colspan="5" class="p-4 text-center text-gray-500">No tasks found.</td>
+                <td colspan="5" class="p-4 text-center text-black-800">No tasks found.</td>
             </tr>
             @endforelse
         </tbody>

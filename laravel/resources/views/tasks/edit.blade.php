@@ -1,9 +1,9 @@
 @extends('layouts.app')
 
-@content
+@section('content')
 <h1 class="text-2xl font-bold mb-4">Edit Task</h1>
 
-<form action="{{ route('tasks.update', $task) }}" method="POST" class="bg-white p-6 rounded shadow space-y-4">
+<form action="/tasks/{{ $task->id }}" method="POST" class="bg-white p-6 rounded shadow space-y-4">
     @csrf
     @method('PUT')
     <div>
@@ -26,7 +26,7 @@
         <input type="date" name="due_date" value="{{ $task->due_date }}" class="w-full border p-2 rounded">
     </div>
     <div class="flex justify-between">
-        <a href="{{ route('tasks.index') }}" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</a>
+        <a href="/tasks" class="bg-gray-400 text-white px-4 py-2 rounded">Cancel</a>
         <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded">Update Task</button>
     </div>
 </form>

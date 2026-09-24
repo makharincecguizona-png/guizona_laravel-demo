@@ -21,13 +21,19 @@ class TaskController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            'task_name' => 'required',
+            'task_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
             'due_date' => 'nullable|date',
         ]);
 
-        Task::create($request->all());
+        Task::create([
+            'task_name' => $request->task_name,
+            'description' => $request->description,
+            'due_date' => $request->due_date,
+            'status' => 'Pending',
+        ]);
 
-        return redirect()->route('tasks.index');
+        return redirect()->to('https://animated-xylophone-xrppgq5xj6wrfp4v4-8000.app.github.dev/tasks');
     }
 
     public function edit(Task $task)
@@ -38,27 +44,30 @@ class TaskController extends Controller
     public function update(Request $request, Task $task)
     {
         $request->validate([
-            'task_name' => 'required',
+            'task_name' => 'required|string|max:255',
+            'description' => 'nullable|string',
+            'status' => 'required|string',
             'due_date' => 'nullable|date',
         ]);
 
-        $task->update($request->all());
+        $task->update($request->only(['task_name', 'description', 'status', 'due_date']));
 
-        return redirect()->route('tasks.index');
+        return redirect()->to('https://animated-xylophone-xrppgq5xj6wrfp4v4-8000.app.github.dev/tasks');
+    }
+
+    public function updateStatus(Task $task)
+    {
+        $task->update([
+            'status' => $task->status === 'Completed' ? 'Pending' : 'Completed',
+        ]);
+
+        return redirect()->to('https://animated-xylophone-xrppgq5xj6wrfp4v4-8000.app.github.dev/tasks');
     }
 
     public function destroy(Task $task)
     {
         $task->delete();
 
-        return redirect()->route('tasks.index');
-    }
-
-    public function updateStatus(Task $task)
-    {
-        $task->status = $task->status === 'Pending' ? 'Completed' : 'Pending';
-        $task->save();
-
-        return redirect()->route('tasks.index');
+        return redirect()->to('https://animated-xylophone-xrppgq5xj6wrfp4v4-8000.app.github.dev/tasks');
     }
 }
