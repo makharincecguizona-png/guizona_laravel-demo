@@ -8,7 +8,7 @@ Course & Year:
 BSIT-2/Section 5
 
 Database Used: 
-SQLite
+MySQL
 
 Features:
 - Add Task
